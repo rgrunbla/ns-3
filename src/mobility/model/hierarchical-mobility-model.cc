@@ -144,6 +144,39 @@ HierarchicalMobilityModel::DoSetPosition (const Vector &position)
       m_child->SetPosition (position);
     }
 }
+
+Quaternion
+HierarchicalMobilityModel::DoGetOrientation (void) const
+{
+  if (!m_parent)
+    {
+      return m_child->GetOrientation ();
+    }
+  Quaternion parentOrientation = m_parent->GetOrientation ();
+  Quaternion childOrientation = m_child->GetOrientation ();
+  return parentOrientation * childOrientation;
+}
+
+void 
+HierarchicalMobilityModel::DoSetOrientation (const Quaternion &orientation)
+{
+  if (m_child == 0)
+    {
+      return;
+    }
+  // This implementation of DoSetOrientation is really an arbitrary choice.
+  // anything else would have been ok.
+  if (m_parent)
+    {
+      Quaternion parentOrientation = m_parent->GetOrientation ();
+      m_child->SetOrientation (orientation);
+    }
+  else
+    {
+      m_child->SetOrientation (orientation);
+    }
+}
+
 Vector
 HierarchicalMobilityModel::DoGetVelocity (void) const
 {

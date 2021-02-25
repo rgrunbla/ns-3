@@ -78,5 +78,16 @@ ConstantAccelerationMobilityModel::SetVelocityAndAcceleration (const Vector &vel
   NotifyCourseChange ();
 }
 
+Quaternion
+ConstantAccelerationMobilityModel::DoGetOrientation (void) const
+{
+  return m_orientation;
+}
+void
+ConstantAccelerationMobilityModel::DoSetOrientation (const Quaternion &orientation)
+{
+  m_orientation = orientation;
+  NotifyCourseChange ();
+}
 
 } // namespace ns3

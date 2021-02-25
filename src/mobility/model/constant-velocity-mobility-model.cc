@@ -69,4 +69,16 @@ ConstantVelocityMobilityModel::DoGetVelocity (void) const
   return m_helper.GetVelocity ();
 }
 
+Quaternion
+ConstantVelocityMobilityModel::DoGetOrientation (void) const
+{
+  return m_orientation;
+}
+void
+ConstantVelocityMobilityModel::DoSetOrientation (const Quaternion &orientation)
+{
+  m_orientation = orientation;
+  NotifyCourseChange ();
+}
+
 } // namespace ns3

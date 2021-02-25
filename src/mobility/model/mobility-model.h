@@ -20,7 +20,9 @@
 #ifndef MOBILITY_MODEL_H
 #define MOBILITY_MODEL_H
 
+#include "ns3/quaternion.h"
 #include "ns3/vector.h"
+#include "ns3/quaternion.h"
 #include "ns3/object.h"
 #include "ns3/traced-callback.h"
 
@@ -47,6 +49,17 @@ public:
   MobilityModel ();
   virtual ~MobilityModel () = 0;
 
+  /**
+   * \return the current orientation
+   */
+  Quaternion GetOrientation (void) const;
+  /**
+   * \param orientation the orientation to set.
+   */
+  void SetOrientation (const Quaternion &orientation);
+  /**
+   * \return the current velocity.
+   */
   /**
    * \return the current position
    */
@@ -107,6 +120,20 @@ private:
    * implement this method.
    */
   virtual void DoSetPosition (const Vector &position) = 0;
+  /**
+   * \return the current orientation.
+   *
+   * Concrete subclasses of this base class must 
+   * implement this method.
+   */
+  virtual Quaternion DoGetOrientation (void) const = 0;
+  /**
+   * \param orientation the orientation to set.
+   *
+   * Concrete subclasses of this base class must 
+   * implement this method.
+   */
+  virtual void DoSetOrientation (const Quaternion &orientation) = 0;
   /**
    * \return the current velocity.
    *

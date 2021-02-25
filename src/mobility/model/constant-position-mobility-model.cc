@@ -52,6 +52,17 @@ ConstantPositionMobilityModel::DoSetPosition (const Vector &position)
   m_position = position;
   NotifyCourseChange ();
 }
+Quaternion
+ConstantPositionMobilityModel::DoGetOrientation (void) const
+{
+  return m_orientation;
+}
+void
+ConstantPositionMobilityModel::DoSetOrientation (const Quaternion &orientation)
+{
+  m_orientation = orientation;
+  NotifyCourseChange ();
+}
 Vector
 ConstantPositionMobilityModel::DoGetVelocity (void) const
 {
