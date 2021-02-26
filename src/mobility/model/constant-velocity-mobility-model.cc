@@ -72,12 +72,13 @@ ConstantVelocityMobilityModel::DoGetVelocity (void) const
 Quaternion
 ConstantVelocityMobilityModel::DoGetOrientation (void) const
 {
-  return m_orientation;
+  m_helper.Update ();
+  return m_helper.GetCurrentOrientation ();
 }
 void
 ConstantVelocityMobilityModel::DoSetOrientation (const Quaternion &orientation)
 {
-  m_orientation = orientation;
+  m_helper.SetOrientation (orientation);
   NotifyCourseChange ();
 }
 

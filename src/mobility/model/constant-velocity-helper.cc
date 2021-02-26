@@ -46,12 +46,23 @@ ConstantVelocityHelper::ConstantVelocityHelper (const Vector &position,
 {
   NS_LOG_FUNCTION (this << position << vel);
 }
+ConstantVelocityHelper::ConstantVelocityHelper (const Vector &position,
+                                                const Vector &vel,
+                                                const Vector &angularVel)
+  : m_position (position),
+    m_velocity (vel),
+    m_angularVelocity (angularVel),
+    m_paused (true)
+{
+  NS_LOG_FUNCTION (this << position << vel << angularVel);
+}
 void
 ConstantVelocityHelper::SetPosition (const Vector &position)
 {
   NS_LOG_FUNCTION (this << position);
   m_position = position;
   m_velocity = Vector (0.0, 0.0, 0.0);
+  m_angularVelocity = Vector (0.0, 0.0, 0.0);
   m_lastUpdate = Simulator::Now ();
 }
 
@@ -77,6 +88,36 @@ ConstantVelocityHelper::SetVelocity (const Vector &vel)
 }
 
 void
+ConstantVelocityHelper::SetOrientation (const Quaternion &orientation)
+{
+  NS_LOG_FUNCTION (this << orientation);
+  m_orientation = orientation;
+  m_angularVelocity = Vector (0.0, 0.0, 0.0);
+  m_lastUpdate = Simulator::Now ();
+}
+
+Quaternion
+ConstantVelocityHelper::GetCurrentOrientation (void) const
+{
+  NS_LOG_FUNCTION (this);
+  return m_orientation;
+}
+
+Vector 
+ConstantVelocityHelper::GetAngularVelocity (void) const
+{
+  NS_LOG_FUNCTION (this);
+  return m_paused ? Vector (0.0, 0.0, 0.0) : m_angularVelocity;
+}
+void 
+ConstantVelocityHelper::SetAngularVelocity (const Vector &angularVel)
+{
+  NS_LOG_FUNCTION (this << angularVel);
+  m_angularVelocity = angularVel;
+  m_lastUpdate = Simulator::Now ();
+}
+
+void
 ConstantVelocityHelper::Update (void) const
 {
   NS_LOG_FUNCTION (this);
@@ -92,6 +133,9 @@ ConstantVelocityHelper::Update (void) const
   m_position.x += m_velocity.x * deltaS;
   m_position.y += m_velocity.y * deltaS;
   m_position.z += m_velocity.z * deltaS;
+  m_orientation.x += 0.5 * m_angularVelocity.x * deltaS;
+  m_orientation.y += 0.5 * m_angularVelocity.y * deltaS;
+  m_orientation.z += 0.5 * m_angularVelocity.z * deltaS;
 }
 
 void
