@@ -20,9 +20,12 @@
 #include "quaternion.h"
 #include "fatal-error.h"
 #include "log.h"
+#include "test.h"
 #include <cmath>
 #include <sstream>
 #include <tuple>
+#include <limits>
+#include <algorithm>
 
 /**
  * \file
@@ -54,11 +57,54 @@ Quaternion::Quaternion ()
   NS_LOG_FUNCTION (this);
 }
 
+Quaternion::Quaternion (const double &angle, const Vector &v)
+{
+  NS_LOG_FUNCTION (this << angle << v);
+		const double s = std::sin(angle * 0.5);
+    x *= s;
+    y *= s;
+    z *= s;
+    w = std::cos(angle * 0.5);
+}
+
 double
 Quaternion::GetLength () const
 {
   NS_LOG_FUNCTION (this);
   return std::sqrt (x * x + y * y + z * z + w * w);
+}
+
+Vector
+Quaternion::eulerAngles () const
+{
+  NS_LOG_FUNCTION (this);
+  return Vector(roll(), pitch(), yaw());
+}
+
+double
+Quaternion::roll () const
+{
+	return std::atan2(2 * (x * y + w * z), w * w + x * x - y * y - z * z);
+}
+
+double
+Quaternion::pitch () const
+{
+	  const double ty = 2 * (y * z + w * x);
+		const double tx = w * w - x * x - y * y + z * z;
+
+		if(Vector2D(tx, ty) == Vector2D(0.0, 0.0)) 
+    {
+			return 2*std::atan2(x, w);
+    }
+
+		return std::atan2(ty, tx);
+}
+
+double
+Quaternion::yaw () const
+{
+  return std::asin(std::max(-1.0, std::min(-2.0 * (x * z - w * y), 1.0)));
 }
 
 std::ostream &operator << (std::ostream &os, const Quaternion &Quaternion)

@@ -58,6 +58,14 @@ public:
   Quaternion (double _x, double _y, double _z, double _w);
   /** Create quaternion (0.0, 0.0, 0.0, 1.0) */
   Quaternion ();
+    /**
+   * \param [in] angle Angle in radian
+   * \param [in] v Normalized axis
+   *
+   * Create quaternion from an angle and a normalized axis
+   */
+   Quaternion (const double &angle, const Vector &v);
+
 
   double x;  //!< x coordinate of quaternion
   double y;  //!< y coordinate of quaternion
@@ -71,15 +79,19 @@ public:
   double GetLength () const;
 
   /**
-   * \brief Rotate a quaternion
-   * \param [in] rotation Angular velocity vector
-   * \param [in] time Duration of rotation
+   * Compute the Euler angles of the quaternion.
+   * Euler angles are given in the roll (x), pitch (y), yaw (z) order.
+   * 
+   * \returns the Euler angles vector.
    */
-  void Rotate (const Vector &rotation, const double &time);
+  Vector eulerAngles() const;
+  double pitch() const;
+  double yaw() const;
+  double roll() const;
 
   /**
    * Output streamer.
-   * Quaternions are written as "x:y:z".
+   * Quaternions are written as "x:y:z:w".
    *
    * \param [in,out] os The stream.
    * \param [in] quaternion The quaternion to stream
@@ -90,7 +102,7 @@ public:
   /**
    * Input streamer.
    *
-   * Quaternions are expected to be in the form "x:y:z".
+   * Quaternions are expected to be in the form "x:y:z:w".
    *
    * \param [in,out] is The stream.
    * \param [in] quaternion The quaternion.
