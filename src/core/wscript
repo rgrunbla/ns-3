@@ -279,6 +279,7 @@ def build(bld):
         'test/names-test-suite.cc',
         'test/object-test-suite.cc',
         'test/ptr-test-suite.cc',
+        'test/quaternion-test-suite.cc',
         'test/event-garbage-collector-test-suite.cc',
         'test/many-uniform-random-variables-one-get-value-call-test-suite.cc',
         'test/one-uniform-random-variable-many-get-value-calls-test-suite.cc',
