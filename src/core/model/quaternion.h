@@ -79,6 +79,18 @@ public:
   double GetLength () const;
 
   /**
+   * Normalize the quaternion.
+   */
+  void normalize ();
+
+  /**
+   * Compute the angle of the quaternion.
+   * 
+   * \returns the angle of the quaternion
+   */
+  double angle () const;
+
+  /**
    * Compute the Euler angles of the quaternion.
    * Euler angles are given in the roll (x), pitch (y), yaw (z) order.
    * 

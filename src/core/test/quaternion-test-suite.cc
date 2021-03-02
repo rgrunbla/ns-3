@@ -20,6 +20,8 @@
 
 // An essential include is test.h
 #include "ns3/test.h"
+#include "ns3/quaternion.h"
+#include <cmath>
 
 /**
  * \file
@@ -57,7 +59,7 @@ private:
 
 /** Add some help text to this case to describe what it is intended to test. */
 QuaternionTestCase1::QuaternionTestCase1 ()
-  : TestCase ("Sample test case (does nothing)")
+  : TestCase ("Quaternion test case 1")
 {}
 
 /**
@@ -74,11 +76,144 @@ QuaternionTestCase1::~QuaternionTestCase1 ()
 void
 QuaternionTestCase1::DoRun (void)
 {
-  // A wide variety of test macros are available in src/core/test.h
-  NS_TEST_ASSERT_MSG_EQ (true, true, "true doesn't equal true for some reason");
-  // Use this one for floating point comparisons
-  NS_TEST_ASSERT_MSG_EQ_TOL (0.01, 0.01, 0.001, "Numbers are not equal within tolerance");
+  Quaternion Q = Quaternion(M_PI * 0.25, Vector(0, 0, 1));
+  Q.normalize();
+  std::cout << "Testcase 1" << "\n";
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.GetLength(), 1.0, 0.001, "Not equal within tolerance");
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.angle(), M_PI * 0.25, 0.001, "Not equal within tolerance");
+  std::cout << Q.eulerAngles() << "\n";
+  std::cout << "Testcase 1 Success" << "\n";
 }
+
+
+/**
+ * \ingroup testing-example
+ * This is an example TestCase.
+ */
+class QuaternionTestCase2 : public TestCase
+{
+public:
+  /** Constructor. */
+  QuaternionTestCase2 ();
+  /** Destructor. */
+  virtual ~QuaternionTestCase2 ();
+
+private:
+  virtual void DoRun (void);
+};
+
+/** Add some help text to this case to describe what it is intended to test. */
+QuaternionTestCase2::QuaternionTestCase2 ()
+  : TestCase ("Quaternion test case 2")
+{}
+
+/**
+ * This destructor does nothing but we include it as a reminder that
+ * the test case should clean up after itself
+ */
+QuaternionTestCase2::~QuaternionTestCase2 ()
+{}
+
+void
+QuaternionTestCase2::DoRun (void)
+{
+  Vector V = Vector(0, 1, 1);
+  double Vl = V.GetLength();
+  V.x /= Vl;
+  V.y /= Vl;
+  V.z /= Vl;
+  Quaternion Q = Quaternion(M_PI * 0.25, V);
+  Q.normalize();
+  std::cout << "Testcase 2" << "\n";
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.GetLength(), 1.0, 0.001, "Not equal within tolerance");
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.angle(), M_PI * 0.25, 0.001, "Not equal within tolerance"); 
+  std::cout << "Testcase 2 Success" << "\n";
+}
+
+
+/**
+ * \ingroup testing-example
+ * This is an example TestCase.
+ */
+class QuaternionTestCase3 : public TestCase
+{
+public:
+  /** Constructor. */
+  QuaternionTestCase3 ();
+  /** Destructor. */
+  virtual ~QuaternionTestCase3 ();
+
+private:
+  virtual void DoRun (void);
+};
+
+/** Add some help text to this case to describe what it is intended to test. */
+QuaternionTestCase3::QuaternionTestCase3 ()
+  : TestCase ("Quaternion test case 3")
+{}
+
+/**
+ * This destructor does nothing but we include it as a reminder that
+ * the test case should clean up after itself
+ */
+QuaternionTestCase3::~QuaternionTestCase3 ()
+{}
+
+void
+QuaternionTestCase3::DoRun (void)
+{
+  Vector V = Vector(1, 2, 3);
+  double Vl = V.GetLength();
+  V.x /= Vl;
+  V.y /= Vl;
+  V.z /= Vl;
+  Quaternion Q = Quaternion(M_PI * 0.25, V);
+  Q.normalize();
+  std::cout << "Testcase 3" << "\n";
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.GetLength(), 1.0, 0.001, "Not equal within tolerance");
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.angle(), M_PI * 0.25, 0.001, "Not equal within tolerance");
+  std::cout << "Testcase 3 Success" << "\n";
+}
+
+/**
+ * \ingroup testing-example
+ * This is an example TestCase.
+ */
+class QuaternionTestCase4 : public TestCase
+{
+public:
+  /** Constructor. */
+  QuaternionTestCase4 ();
+  /** Destructor. */
+  virtual ~QuaternionTestCase4 ();
+
+private:
+  virtual void DoRun (void);
+};
+
+/** Add some help text to this case to describe what it is intended to test. */
+QuaternionTestCase4::QuaternionTestCase4 ()
+  : TestCase ("Quaternion: test equivalence between eulerAngles and yaw, pitch, roll")
+{}
+
+/**
+ * This destructor does nothing but we include it as a reminder that
+ * the test case should clean up after itself
+ */
+QuaternionTestCase4::~QuaternionTestCase4 ()
+{}
+
+void
+QuaternionTestCase4::DoRun (void)
+{
+  Quaternion Q = Quaternion(0, 0, 1, 1);
+  std::cout << "Testcase 4" << "\n";
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.yaw(), Q.eulerAngles().x, 0.001, "Not equal within tolerance"); 
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.pitch(), Q.eulerAngles().y, 0.001, "Not equal within tolerance"); 
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.roll(), Q.eulerAngles().z, 0.001, "Not equal within tolerance");
+  std::cout << "Testcase 4 Success" << "\n";
+}
+
 
 /**
  * \ingroup testing-example
@@ -97,6 +232,9 @@ QuaternionTestSuite::QuaternionTestSuite ()
   : TestSuite ("quaternion")
 {
   AddTestCase (new QuaternionTestCase1);
+  AddTestCase (new QuaternionTestCase2);
+  AddTestCase (new QuaternionTestCase3);
+  AddTestCase (new QuaternionTestCase4);
 }
 
 // Do not forget to allocate an instance of this TestSuite

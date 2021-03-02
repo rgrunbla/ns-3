@@ -61,9 +61,9 @@ Quaternion::Quaternion (const double &angle, const Vector &v)
 {
   NS_LOG_FUNCTION (this << angle << v);
 		const double s = std::sin(angle * 0.5);
-    x *= s;
-    y *= s;
-    z *= s;
+    x = v.x * s;
+    y = v.y * s;
+    z = v.z * s;
     w = std::cos(angle * 0.5);
 }
 
@@ -74,11 +74,22 @@ Quaternion::GetLength () const
   return std::sqrt (x * x + y * y + z * z + w * w);
 }
 
+double
+Quaternion::angle () const
+{
+  if (std::abs(w) > std::cos(1/2))
+		{
+			return 2 * std::asin(sqrt(x * x + y * y + z * z));
+		}
+
+		return 2 * std::acos(w);
+}
+
 Vector
 Quaternion::eulerAngles () const
 {
   NS_LOG_FUNCTION (this);
-  return Vector(roll(), pitch(), yaw());
+  return Vector(pitch(), yaw(), roll());
 }
 
 double
@@ -105,6 +116,16 @@ double
 Quaternion::yaw () const
 {
   return std::asin(std::max(-1.0, std::min(-2.0 * (x * z - w * y), 1.0)));
+}
+
+void
+Quaternion::normalize ()
+{
+  double length = GetLength();
+  x /=  length;
+  y /=  length;
+  z /=  length;
+  w /=  length;
 }
 
 std::ostream &operator << (std::ostream &os, const Quaternion &Quaternion)
