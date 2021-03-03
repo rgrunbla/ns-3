@@ -133,6 +133,7 @@ ConstantVelocityHelper::Update (void) const
   m_position.x += m_velocity.x * deltaS;
   m_position.y += m_velocity.y * deltaS;
   m_position.z += m_velocity.z * deltaS;
+  // https://math.stackexchange.com/questions/39553/how-do-i-apply-an-angular-velocity-vector3-to-a-unit-quaternion-orientation
   m_orientation.x += 0.5 * m_angularVelocity.x * deltaS;
   m_orientation.y += 0.5 * m_angularVelocity.y * deltaS;
   m_orientation.z += 0.5 * m_angularVelocity.z * deltaS;

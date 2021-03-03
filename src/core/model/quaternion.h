@@ -97,6 +97,8 @@ public:
    * \returns the Euler angles vector.
    */
   Vector eulerAngles() const;
+  Vector rotate(Vector) const;
+  
   double pitch() const;
   double yaw() const;
   double roll() const;

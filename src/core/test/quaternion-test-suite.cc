@@ -22,6 +22,7 @@
 #include "ns3/test.h"
 #include "ns3/quaternion.h"
 #include <cmath>
+#include <tuple>
 
 /**
  * \file
@@ -214,6 +215,57 @@ QuaternionTestCase4::DoRun (void)
   std::cout << "Testcase 4 Success" << "\n";
 }
 
+/**
+ * \ingroup testing-example
+ * This is an example TestCase.
+ */
+class QuaternionTestCase5 : public TestCase
+{
+public:
+  /** Constructor. */
+  QuaternionTestCase5 ();
+  /** Destructor. */
+  virtual ~QuaternionTestCase5 ();
+
+private:
+  virtual void DoRun (void);
+};
+
+/** Add some help text to this case to describe what it is intended to test. */
+QuaternionTestCase5::QuaternionTestCase5 ()
+  : TestCase ("Quaternion: test equivalence between eulerAngles and yaw, pitch, roll")
+{}
+
+/**
+ * This destructor does nothing but we include it as a reminder that
+ * the test case should clean up after itself
+ */
+QuaternionTestCase5::~QuaternionTestCase5 ()
+{}
+
+void
+QuaternionTestCase5::DoRun (void)
+{
+  std::cout << "Testcase 5" << "\n";
+  std::vector<std::tuple<double, Vector, Vector>> data = {
+      std::make_tuple<double, Vector, Vector>(M_PI / 2.0, Vector(1,0,0), Vector(1,0,0)),
+      std::make_tuple<double, Vector, Vector>(M_PI / 2.0, Vector(0,1,0), Vector(0,0,-1)),
+      std::make_tuple<double, Vector, Vector>(M_PI / 2.0, Vector(0,0,1), Vector(0,1,0)),
+      std::make_tuple<double, Vector, Vector>(M_PI / 2.0, Vector(-1,0,0), Vector(1,0,0)),
+      std::make_tuple<double, Vector, Vector>(M_PI / 2.0, Vector(0,-1,0), Vector(0,0,1)),
+      std::make_tuple<double, Vector, Vector>(M_PI / 2.0, Vector(0,0,-1), Vector(0,-1,0)),
+  };
+
+  for (const auto & tuple: data) {
+      Quaternion Q = Quaternion(std::get<0>(tuple), std::get<1>(tuple));
+      Q.normalize();
+      Vector R = Q.rotate(Vector(1, 0, 0));
+      NS_TEST_ASSERT_MSG_EQ_TOL (R.x, std::get<2>(tuple).x, 0.001, "Not equal within tolerance"); 
+      NS_TEST_ASSERT_MSG_EQ_TOL (R.y, std::get<2>(tuple).y, 0.001, "Not equal within tolerance"); 
+      NS_TEST_ASSERT_MSG_EQ_TOL (R.z, std::get<2>(tuple).z, 0.001, "Not equal within tolerance"); 
+    }
+  std::cout << "Testcase 5 Success" << "\n";
+}
 
 /**
  * \ingroup testing-example
@@ -235,6 +287,7 @@ QuaternionTestSuite::QuaternionTestSuite ()
   AddTestCase (new QuaternionTestCase2);
   AddTestCase (new QuaternionTestCase3);
   AddTestCase (new QuaternionTestCase4);
+  AddTestCase (new QuaternionTestCase5);
 }
 
 // Do not forget to allocate an instance of this TestSuite

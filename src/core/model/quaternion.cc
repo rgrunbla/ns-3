@@ -128,6 +128,12 @@ Quaternion::normalize ()
   w /=  length;
 }
 
+Vector Quaternion::rotate(Vector v) const
+{
+  Vector u = Vector(x, y, z);
+  return 2.0 * Dot(u, v) * u + (w*w - Dot(u, u)) * v + 2.0 * w * Cross(u, v);
+}
+
 std::ostream &operator << (std::ostream &os, const Quaternion &Quaternion)
 {
   os << Quaternion.x << ":" << Quaternion.y << ":" << Quaternion.z << ":" << Quaternion.w;
