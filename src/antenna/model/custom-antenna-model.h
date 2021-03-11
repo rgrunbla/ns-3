@@ -24,6 +24,7 @@
 #include <ns3/object.h>
 #include <ns3/angles.h>
 #include <ns3/node.h>
+#include <ns3/node-container.h>
 #include <functional>
 
 
@@ -53,6 +54,7 @@ public:
   static TypeId GetTypeId ();
 
   void Install (Ptr<Node> node);
+  void Install (NodeContainer nodes);
   /**
    * this method is expected to be re-implemented by each antenna model 
    * 

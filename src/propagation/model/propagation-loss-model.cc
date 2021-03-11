@@ -951,12 +951,28 @@ AntennaPropagationLossModel::AntennaPropagationLossModel ()
 }
 
 double
-AntennaPropagationLossModel::DoCalcRxPower (double txPowerDbm,
-                                          Ptr<MobilityModel> a,
-                                          Ptr<MobilityModel> b) const
+AntennaPropagationLossModel::GetGain (Ptr<MobilityModel> a,
+                                      Ptr<MobilityModel> b) const
 {
-  double gainA = a->GetObject<CustomAntennaModel>()->GetGainDb(0.0, 0.0);
-  double gainB = b->GetObject<CustomAntennaModel>()->GetGainDb(0.0, 0.0);
+  Vector difference = b->GetPosition () - a->GetPosition ();
+  Quaternion orientation = a->GetOrientation();
+  orientation.inverse();
+  /* Position of b in the rotated frame of a */
+  Vector dpos = orientation.rotate(difference);
+  double rho = dpos.GetLength(); // useless
+  double theta = std::acos(dpos.z / rho);
+  double phi = std::atan2(dpos.y, dpos.x);
+
+  return a->GetObject<CustomAntennaModel>()->GetGainDb(theta, phi);
+}
+
+double
+AntennaPropagationLossModel::DoCalcRxPower (double txPowerDbm,
+                                            Ptr<MobilityModel> a,
+                                            Ptr<MobilityModel> b) const
+{
+  double gainA = GetGain(a, b);
+  double gainB = GetGain(b, a);
   return gainA + gainB;
 }
 

@@ -128,6 +128,27 @@ Quaternion::normalize ()
   w /=  length;
 }
 
+void
+Quaternion::conjugate ()
+{
+  x = -x;
+  y = -y;
+  z = -z;
+  w = w;
+}
+
+void
+Quaternion::inverse ()
+{
+  double dot = x*x + y*y + z*z + w*w;
+  conjugate();
+  x /= dot;
+  y /= dot;
+  z /= dot;
+  w /= dot;
+}
+
+
 Vector Quaternion::rotate(Vector v) const
 {
   Vector u = Vector(x, y, z);

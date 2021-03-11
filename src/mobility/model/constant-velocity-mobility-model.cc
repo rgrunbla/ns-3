@@ -50,6 +50,15 @@ ConstantVelocityMobilityModel::SetVelocity (const Vector &speed)
   NotifyCourseChange ();
 }
 
+void
+ConstantVelocityMobilityModel::SetAngularVelocity (const Vector &angularVel)
+{
+  m_helper.Update ();
+  m_helper.SetAngularVelocity (angularVel);
+  m_helper.Unpause ();
+  NotifyCourseChange ();
+}
+
 
 Vector
 ConstantVelocityMobilityModel::DoGetPosition (void) const

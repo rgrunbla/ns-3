@@ -83,6 +83,17 @@ public:
    */
   void normalize ();
 
+
+  /**
+   * Conjugate the quaternion.
+   */
+  void conjugate ();
+
+  /**
+   * Inverse the quaternion.
+   */
+  void inverse ();
+
   /**
    * Compute the angle of the quaternion.
    * 

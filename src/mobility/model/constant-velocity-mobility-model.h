@@ -54,6 +54,13 @@ public:
    * Unit is meters/s
    */
   void SetVelocity (const Vector &speed);
+
+  /**
+   * \param angularVel the new angular velocity to set.
+   *
+   * Unit is quaternion/s
+   */
+  void SetAngularVelocity (const Vector &angularVel);
 private:
   virtual Vector DoGetPosition (void) const;
   virtual void DoSetPosition (const Vector &position);
