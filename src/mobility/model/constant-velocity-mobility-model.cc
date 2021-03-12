@@ -19,6 +19,7 @@
  */
 #include "constant-velocity-mobility-model.h"
 #include "ns3/simulator.h"
+#include "ns3/log.h"
 
 namespace ns3 {
 

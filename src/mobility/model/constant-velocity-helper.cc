@@ -27,32 +27,23 @@ namespace ns3 {
 
 NS_LOG_COMPONENT_DEFINE ("ConstantVelocityHelper");
 
-ConstantVelocityHelper::ConstantVelocityHelper ()
-  : m_paused (true)
+ConstantVelocityHelper::ConstantVelocityHelper () : m_paused (true)
 {
   NS_LOG_FUNCTION (this);
 }
 ConstantVelocityHelper::ConstantVelocityHelper (const Vector &position)
-  : m_position (position),
-    m_paused (true)
+    : m_position (position), m_paused (true)
 {
   NS_LOG_FUNCTION (this << position);
 }
-ConstantVelocityHelper::ConstantVelocityHelper (const Vector &position,
-                                                const Vector &vel)
-  : m_position (position),
-    m_velocity (vel),
-    m_paused (true)
+ConstantVelocityHelper::ConstantVelocityHelper (const Vector &position, const Vector &vel)
+    : m_position (position), m_velocity (vel), m_paused (true)
 {
   NS_LOG_FUNCTION (this << position << vel);
 }
-ConstantVelocityHelper::ConstantVelocityHelper (const Vector &position,
-                                                const Vector &vel,
+ConstantVelocityHelper::ConstantVelocityHelper (const Vector &position, const Vector &vel,
                                                 const Vector &angularVel)
-  : m_position (position),
-    m_velocity (vel),
-    m_angularVelocity (angularVel),
-    m_paused (true)
+    : m_position (position), m_velocity (vel), m_angularVelocity (angularVel), m_paused (true)
 {
   NS_LOG_FUNCTION (this << position << vel << angularVel);
 }
@@ -73,13 +64,13 @@ ConstantVelocityHelper::GetCurrentPosition (void) const
   return m_position;
 }
 
-Vector 
+Vector
 ConstantVelocityHelper::GetVelocity (void) const
 {
   NS_LOG_FUNCTION (this);
   return m_paused ? Vector (0.0, 0.0, 0.0) : m_velocity;
 }
-void 
+void
 ConstantVelocityHelper::SetVelocity (const Vector &vel)
 {
   NS_LOG_FUNCTION (this << vel);
@@ -103,13 +94,13 @@ ConstantVelocityHelper::GetCurrentOrientation (void) const
   return m_orientation;
 }
 
-Vector 
+Vector
 ConstantVelocityHelper::GetAngularVelocity (void) const
 {
   NS_LOG_FUNCTION (this);
   return m_paused ? Vector (0.0, 0.0, 0.0) : m_angularVelocity;
 }
-void 
+void
 ConstantVelocityHelper::SetAngularVelocity (const Vector &angularVel)
 {
   NS_LOG_FUNCTION (this << angularVel);
@@ -120,13 +111,17 @@ ConstantVelocityHelper::SetAngularVelocity (const Vector &angularVel)
 void
 ConstantVelocityHelper::Update (void) const
 {
-  NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION (this << m_orientation);
+  std::cerr << "yolo err\n";
+  std::cout << "yolo out\n";
+  NS_LOG_DEBUG ("ConstantVelocityHelper::Update(): yolo.");
   Time now = Simulator::Now ();
   NS_ASSERT (m_lastUpdate <= now);
   Time deltaTime = now - m_lastUpdate;
   m_lastUpdate = now;
   if (m_paused)
     {
+      NS_LOG_DEBUG ("return");
       return;
     }
   double deltaS = deltaTime.GetSeconds ();
@@ -137,6 +132,9 @@ ConstantVelocityHelper::Update (void) const
   m_orientation.x += 0.5 * m_angularVelocity.x * deltaS;
   m_orientation.y += 0.5 * m_angularVelocity.y * deltaS;
   m_orientation.z += 0.5 * m_angularVelocity.z * deltaS;
+  std::cout << m_orientation << "\n";
+  m_orientation.normalize ();
+  std::cout << m_orientation << "\n";
 }
 
 void
@@ -163,14 +161,14 @@ ConstantVelocityHelper::UpdateWithBounds (const Box &bounds) const
   m_position.z = std::max (bounds.zMin, m_position.z);
 }
 
-void 
+void
 ConstantVelocityHelper::Pause (void)
 {
   NS_LOG_FUNCTION (this);
   m_paused = true;
 }
 
-void 
+void
 ConstantVelocityHelper::Unpause (void)
 {
   NS_LOG_FUNCTION (this);
