@@ -112,16 +112,13 @@ void
 ConstantVelocityHelper::Update (void) const
 {
   NS_LOG_FUNCTION (this << m_orientation);
-  std::cerr << "yolo err\n";
-  std::cout << "yolo out\n";
-  NS_LOG_DEBUG ("ConstantVelocityHelper::Update(): yolo.");
   Time now = Simulator::Now ();
   NS_ASSERT (m_lastUpdate <= now);
   Time deltaTime = now - m_lastUpdate;
   m_lastUpdate = now;
   if (m_paused)
     {
-      NS_LOG_DEBUG ("return");
+      m_orientation.normalize ();
       return;
     }
   double deltaS = deltaTime.GetSeconds ();
@@ -132,9 +129,8 @@ ConstantVelocityHelper::Update (void) const
   m_orientation.x += 0.5 * m_angularVelocity.x * deltaS;
   m_orientation.y += 0.5 * m_angularVelocity.y * deltaS;
   m_orientation.z += 0.5 * m_angularVelocity.z * deltaS;
-  std::cout << m_orientation << "\n";
   m_orientation.normalize ();
-  std::cout << m_orientation << "\n";
+  return;
 }
 
 void
