@@ -209,9 +209,9 @@ QuaternionTestCase4::DoRun (void)
 {
   Quaternion Q = Quaternion(0, 0, 1, 1);
   std::cout << "Testcase 4" << "\n";
-  NS_TEST_ASSERT_MSG_EQ_TOL (Q.yaw(), Q.eulerAngles().x, 0.001, "Not equal within tolerance"); 
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.roll(), Q.eulerAngles().x, 0.001, "Not equal within tolerance"); 
   NS_TEST_ASSERT_MSG_EQ_TOL (Q.pitch(), Q.eulerAngles().y, 0.001, "Not equal within tolerance"); 
-  NS_TEST_ASSERT_MSG_EQ_TOL (Q.roll(), Q.eulerAngles().z, 0.001, "Not equal within tolerance");
+  NS_TEST_ASSERT_MSG_EQ_TOL (Q.yaw(), Q.eulerAngles().z, 0.001, "Not equal within tolerance");
   std::cout << "Testcase 4 Success" << "\n";
 }
 

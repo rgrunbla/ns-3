@@ -89,34 +89,31 @@ Vector
 Quaternion::eulerAngles () const
 {
   NS_LOG_FUNCTION (this);
-  return Vector(pitch(), yaw(), roll());
+  return Vector(roll(), pitch(), yaw());
 }
 
 double
 Quaternion::roll () const
 {
-	return std::atan2(2 * (x * y + w * z), w * w + x * x - y * y - z * z);
+	return std::atan2(2 * (w * x + y * z), 1 - 2 * ( x * x + y * y));
 }
 
 double
 Quaternion::pitch () const
 {
-	  const double ty = 2 * (y * z + w * x);
-		const double tx = w * w - x * x - y * y + z * z;
-
-		if(Vector2D(tx, ty) == Vector2D(0.0, 0.0)) 
-    {
-			return 2*std::atan2(x, w);
-    }
-
-		return std::atan2(ty, tx);
+	  const double sinp = 2 * (w * y - z * x);
+    if (std::abs(sinp) >= 1)
+        return std::copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+    else
+        return std::asin(sinp);
 }
 
 double
 Quaternion::yaw () const
 {
-  return std::asin(std::max(-1.0, std::min(-2.0 * (x * z - w * y), 1.0)));
-}
+    const double siny_cosp = 2 * (w * z + x * y);
+    const double cosy_cosp = 1 - 2 * (y * y + z * z);
+    return std::atan2(siny_cosp, cosy_cosp);}
 
 void
 Quaternion::normalize ()
